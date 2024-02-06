@@ -506,8 +506,56 @@ function sortByAsc(inputArray) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+function shuffleChar(str, iterations) {
+  if (iterations === 0 || str.length < 2) {
+    return str;
+  }
+
+  let shuffledString = str;
+  const initialString = str;
+  let cycleFound = false;
+  let cycleLength = 0;
+
+  for (let iter = 0; iter < iterations; iter += 1) {
+    let evenIndexChars = '';
+    let oddIndexChars = '';
+
+    for (let index = 0; index < shuffledString.length; index += 1) {
+      if (index % 2 === 0) {
+        evenIndexChars += shuffledString.charAt(index);
+      } else {
+        oddIndexChars += shuffledString.charAt(index);
+      }
+    }
+
+    shuffledString = evenIndexChars + oddIndexChars;
+
+    if (!cycleFound && shuffledString === initialString) {
+      cycleFound = true;
+      cycleLength = iter + 1;
+      break;
+    }
+  }
+
+  if (cycleFound) {
+    const effectiveIterations = iterations % cycleLength;
+    for (let iter = 0; iter < effectiveIterations; iter += 1) {
+      let evenIndexChars = '';
+      let oddIndexChars = '';
+
+      for (let index = 0; index < shuffledString.length; index += 1) {
+        if (index % 2 === 0) {
+          evenIndexChars += shuffledString.charAt(index);
+        } else {
+          oddIndexChars += shuffledString.charAt(index);
+        }
+      }
+
+      shuffledString = evenIndexChars + oddIndexChars;
+    }
+  }
+
+  return shuffledString;
 }
 
 /**
